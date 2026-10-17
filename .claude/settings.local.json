@@ -7,7 +7,28 @@
       "Bash(rm -f \"E:/5. Portfolio_Daud Shaima/clawsbyd/.env.prod.tmp\")",
       "Bash(git -C \"E:/5. Portfolio_Daud Shaima/clawsbyd\" check-ignore -v .env.local .env.prod.tmp)",
       "Bash(git -C \"E:/5. Portfolio_Daud Shaima/clawsbyd\" status --short)",
-      "Bash(grep -v '^\\\\s*$')"
+      "Bash(grep -v '^\\\\s*$')",
+      "Bash(pnpm --version)",
+      "Bash(npm info *)",
+      "Bash(node -e ' *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d\\)\")",
+      "Bash(pnpm config *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm typecheck *)",
+      "Bash(node -e \"const m = require\\('./node_modules/@date-fns/tz/dist/index.js'\\); console.log\\(Object.keys\\(m\\).slice\\(0,20\\)\\)\")",
+      "Bash(pnpm lint *)",
+      "Bash(npx next *)",
+      "Bash(./node_modules/.bin/next lint *)",
+      "Bash(./node_modules/.bin/next --version)",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\(0,'utf8'\\)\\); console.log\\(JSON.stringify\\({exports:d.exports,main:d.main},null,2\\)\\)\")",
+      "Bash(node -e \"const m = require\\('./node_modules/eslint-config-next/dist/index.js'\\); console.log\\(typeof m, typeof m.default, Array.isArray\\(m.default\\)\\)\")",
+      "Bash(pnpm build *)",
+      "Bash(pnpm dev *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/design-preview)",
+      "Bash(git mv *)",
+      "Bash(pnpm exec *)"
     ]
   }
 }

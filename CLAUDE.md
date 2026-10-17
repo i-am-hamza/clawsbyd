@@ -72,4 +72,5 @@ Report in this shape, short: 1) what now works, in five lines or fewer, 2) anyth
 you assumed or skipped, 3) how I can check it myself. Full detail only if I ask.
 
 ## Chosen design direction
-«TO CONFIRM — filled in after session 1»
+Direction A — Lookbook (SPEC §4.2), with the palette adjustments in
+design/instagram/NOTES.md.

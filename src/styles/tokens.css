@@ -1,0 +1,90 @@
+/*
+  tokens.css — design tokens for Claws by D
+  §4.2 Direction A "Lookbook"  (chosen)
+  §4.5 Shared tokens
+
+  Contrast table (WCAG AA: 4.5:1 body, 3:1 large):
+  ┌─────────────────────────────────────────────────────────────────┐
+  │ DIRECTION A                          ratio  body  large         │
+  │ --ink (#2B0D16) on --milk (#FAF6F7)  16.7:1  ✓     ✓           │
+  │ --ink-muted (#6B5560) on --milk       6.4:1  ✓     ✓           │
+  │ --accent-dainty (#A3405A) on --milk   5.75:1 ✓     ✓           │
+  │ --accent-glam (#851230) on --milk     9.2:1  ✓     ✓           │
+  │ white on --accent-dainty              6.1:1  ✓     ✓           │
+  │ white on --accent-glam                9.8:1  ✓     ✓           │
+  │ mood 0.25 accent ≈ #9E3751 on milk   ~6.9:1 ✓     ✓           │
+  │ mood 0.50 accent ≈ #983048 on milk   ~7.7:1 ✓     ✓           │
+  │ mood 0.75 accent ≈ #92253F on milk   ~8.2:1 ✓     ✓           │
+  └─────────────────────────────────────────────────────────────────┘
+*/
+
+/* ── Shared tokens §4.5 ─────────────────────────────────────────── */
+:root {
+  /* Radii */
+  --radius-chip:  4px;
+  --radius-input: 12px;
+  --radius-card:  20px;
+  --radius-pill:  9999px;
+
+  /* Motion */
+  --duration-ui: 240ms;
+  --ease-ui: cubic-bezier(.32, .72, 0, 1);
+
+  /* Touch target */
+  --tap-target: 44px;
+
+  /* Mood (set by MoodProvider; default = 0 = dainty) */
+  --mood: 0;
+}
+
+/* ── Direction A — Lookbook ──────────────────────────────────────── */
+[data-direction="a"] {
+  color-scheme: light;
+
+  /* Raw palette */
+  --milk:         #FAF6F7;
+  --porcelain:    #F3E9EC;
+  --ink:          #2B0D16;
+  --ink-muted:    #6B5560;
+  --blush:        #F0C0CB;
+  --accent-dainty:#A3405A;
+  --accent-glam:  #851230;
+  --chrome-from:  #EEF0F3;
+  --chrome-to:    #A3A9B3;
+
+  /* Semantic aliases */
+  --ground:       var(--milk);
+  --surface:      var(--porcelain);
+  --text:         var(--ink);
+  --text-muted:   var(--ink-muted);
+  --border:       color-mix(in srgb, var(--ink) 12%, transparent);
+
+  /* Mood-derived accent (oklch interpolation stays AA throughout) */
+  --accent: color-mix(
+    in oklch,
+    var(--accent-dainty),
+    var(--accent-glam) calc(var(--mood) * 100%)
+  );
+
+  /* Fallback where color-mix(in oklch) isn't supported */
+  @supports not (color: color-mix(in oklch, red, blue)) {
+    --accent: var(--accent-dainty);
+  }
+
+  /* Mood-driven display weight: 400 (dainty) → 900 (glam) */
+  --display-weight: calc(400 + var(--mood) * 500);
+
+  /* Fonts */
+  --font-display: var(--font-display-a, 'Bodoni Moda', Georgia, serif);
+  --font-body:    var(--font-body-a, 'Instrument Sans', system-ui, sans-serif);
+
+  /* Chrome gradient */
+  --chrome-gradient: linear-gradient(135deg, var(--chrome-from), var(--chrome-to));
+
+  /* Button colours */
+  --btn-primary-bg:   var(--accent);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: var(--accent);
+  --btn-secondary-border: var(--accent);
+}

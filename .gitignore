@@ -1,5 +1,27 @@
+# env
 .env*.local
 .env
-.vercel
-node_modules
 .env*
+
+# vercel
+.vercel
+
+# dependencies
+node_modules
+.pnpm-store
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# misc
+*.tsbuildinfo
+next-env.d.ts

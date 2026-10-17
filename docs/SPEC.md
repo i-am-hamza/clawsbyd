@@ -194,7 +194,7 @@ the mood of her strongest posts, and adjust the palettes below toward what is ac
 there. Report what you changed and why. If the folder is empty, use the palettes as
 written and say so.
 
-### 4.2 Direction A — "Lookbook" (recommended default)
+### 4.2 Direction A — "Lookbook" (chosen)
 **Idea:** a fashion lookbook crossed with a garment tech pack — her vernacular as a
 fashion-technology student. Her photos are the hero. Structure borrows from tech packs:
 spec chips with a nail-shape glyph, colour swatches with names, a sizing guide that
@@ -202,13 +202,13 @@ reads like a real spec sheet.
 
 | Token | Hex | Use |
 |---|---|---|
-| `--milk` | #FBF7F8 | page ground (cool, milky gel white — not cream) |
+| `--milk` | #FAF6F7 | page ground (warm-cool milky gel white — not cream; 16.7:1 on ink) |
 | `--porcelain` | #F3E9EC | secondary surface |
-| `--ink` | #2B0D16 | text (oxblood-black, 16.9:1 on milk) |
+| `--ink` | #2B0D16 | text (oxblood-black, 16.7:1 on milk) |
 | `--ink-muted` | #6B5560 | secondary text (6.4:1 on milk) |
-| `--blush` | #F2C4CE | surfaces and chips only, never text |
+| `--blush` | #F0C0CB | surfaces and chips only, never text |
 | `--accent-dainty` | #A3405A | accent at the dainty end (5.75:1 on milk, white on it 6.1:1) |
-| `--accent-glam` | #8C1332 | accent at the glam end (8.8:1 on milk, white on it 9.3:1) |
+| `--accent-glam` | #851230 | accent at the glam end (9.2:1 on milk, white on it 9.8:1) |
 | `--chrome` | gradient #EEF0F3 → #A3A9B3 | glam-end slider track and badges only |
 
 Type: **Bodoni Moda** (variable, `opsz` + `wght` 400–900, italics) for display;
@@ -219,22 +219,7 @@ Layout: left-aligned, editorial, photo-led. Lookbook is an uneven two-column gri
 4:5 images on mobile, three columns on desktop. Generous whitespace, large type, quiet UI.
 
 ### 4.3 Direction B — "Lacquer"
-**Idea:** the inside of a dark gel bottle — a night-out set under a ring light. Glam-led;
-dainty sets sit on soft pearl cards so they don't go muddy.
-
-| Token | Hex | Use |
-|---|---|---|
-| `--lacquer` | #1B0F17 | page ground (deep aubergine, like a dark gel) |
-| `--lacquer-2` | #28171F | surface (only 1.09:1 above ground — keep the hairline border) |
-| `--pearl` | #F5ECEF | text (16.1:1) |
-| `--smoke` | #B9A9B1 | secondary text (8.3:1) |
-| `--petal` | #F4B6C6 | accent at the dainty end; buttons with lacquer text (11:1) |
-| `--chrome` | gradient #F2F3F5 → #A7ADB8 → #E4E6EA | accent at the glam end; buttons with lacquer text (8.3:1 on the dark stop) |
-
-Type: **Bricolage Grotesque** (variable `opsz`, `wdth` 75–100, `wght` 200–800) for
-display — condensed and light at dainty, wide and heavy at glam; **Figtree** for body.
-Layout: full-bleed photography, centred hero wordmark, horizontal swipe strips for
-featured looks.
+Not chosen.
 
 ### 4.4 Recommendation
 A by default: everyday and dainty sets are the volume for college clients and look

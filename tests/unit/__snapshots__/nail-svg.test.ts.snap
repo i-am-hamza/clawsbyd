@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`nailPath > almond/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > almond/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > almond/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > almond/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > coffin/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > coffin/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 C 0 38 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 38 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > coffin/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 C 0 26 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 26 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > coffin/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 C 0 64 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 64 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > oval/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 L 2 16 C 2 2 22 2 22 16 L 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > oval/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 L 2 16 C 2 2 22 2 22 16 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > oval/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 L 2 16 C 2 2 22 2 22 16 L 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > oval/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 L 2 16 C 2 2 22 2 22 16 L 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > round/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 L 0 12 C 0 0 24 0 24 12 L 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > round/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 L 0 12 C 0 0 24 0 24 12 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > round/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 L 0 12 C 0 0 24 0 24 12 L 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > round/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 L 0 12 C 0 0 24 0 24 12 L 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > square/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 L 0 2 Q 0 0 2 0 L 22 0 Q 24 0 24 2 L 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > square/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 L 0 2 Q 0 0 2 0 L 22 0 Q 24 0 24 2 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > square/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 L 0 2 Q 0 0 2 0 L 22 0 Q 24 0 24 2 L 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > square/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 L 0 2 Q 0 0 2 0 L 22 0 Q 24 0 24 2 L 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > squoval/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 L 0 7 Q 0 0 7 0 L 17 0 Q 24 0 24 7 L 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > squoval/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 L 0 7 Q 0 0 7 0 L 17 0 Q 24 0 24 7 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > squoval/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 L 0 7 Q 0 0 7 0 L 17 0 Q 24 0 24 7 L 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > squoval/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 L 0 7 Q 0 0 7 0 L 17 0 Q 24 0 24 7 L 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`nailPath > stiletto/long matches snapshot 1`] = `"M 2 60 Q 0 60 0 58 C 0 46 12 0 12 0 C 12 0 24 46 24 58 Q 24 60 22 60 Q 12 62 2 60 Z"`;
+
+exports[`nailPath > stiletto/medium matches snapshot 1`] = `"M 2 48 Q 0 48 0 46 C 0 34 12 0 12 0 C 12 0 24 34 24 46 Q 24 48 22 48 Q 12 50 2 48 Z"`;
+
+exports[`nailPath > stiletto/short matches snapshot 1`] = `"M 2 36 Q 0 36 0 34 C 0 22 12 0 12 0 C 12 0 24 22 24 34 Q 24 36 22 36 Q 12 38 2 36 Z"`;
+
+exports[`nailPath > stiletto/xl matches snapshot 1`] = `"M 2 74 Q 0 74 0 72 C 0 60 12 0 12 0 C 12 0 24 60 24 72 Q 24 74 22 74 Q 12 76 2 74 Z"`;
+
+exports[`renderNailPreviewSVG > snapshot: almond/medium/solid 1`] = `
+"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 50" width="136" height="50" role="img" aria-label="almond medium nails">
+  <path d="M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z" fill="#F2C4CE" transform="translate(0,0)"/>
+  <path d="M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z" fill="#F2C4CE" transform="translate(28,0)"/>
+  <path d="M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z" fill="#F2C4CE" transform="translate(56,0)"/>
+  <path d="M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z" fill="#F2C4CE" transform="translate(84,0)"/>
+  <path d="M 2 48 Q 0 48 0 46 L 3 20 C 3 8 12 0 12 0 C 12 0 21 8 21 20 L 24 46 Q 24 48 22 48 Q 12 50 2 48 Z" fill="#F2C4CE" transform="translate(112,0)"/>
+</svg>"
+`;
+
+exports[`renderNailPreviewSVG > snapshot: coffin/long/chrome 1`] = `
+"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 62" width="136" height="62" role="img" aria-label="coffin long nails"><defs>
+  <linearGradient id="np-coffin-long-chrome" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#EEF0F3"/>
+    <stop offset="40%" stop-color="#C8CDD6"/>
+    <stop offset="100%" stop-color="#A3A9B3"/>
+  </linearGradient>
+  <linearGradient id="np-coffin-long-chrome-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F2F3F5"/>
+    <stop offset="45%" stop-color="#A7ADB8"/>
+    <stop offset="100%" stop-color="#E4E6EA"/>
+  </linearGradient>
+  <linearGradient id="np-coffin-long-cat-eye" x1="50%" y1="0%" x2="50%" y2="100%">
+    <stop offset="0%" stop-color="#9B8FA8" stop-opacity="0.2"/>
+    <stop offset="45%" stop-color="#C8B8D5" stop-opacity="0.9"/>
+    <stop offset="55%" stop-color="#E0D0EC" stop-opacity="1"/>
+    <stop offset="100%" stop-color="#9B8FA8" stop-opacity="0.2"/>
+  </linearGradient>
+</defs>
+  <path d="M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z" fill="url(#np-coffin-long-chrome)" transform="translate(0,0)"/>
+  <path d="M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z" fill="url(#np-coffin-long-chrome)" transform="translate(28,0)"/>
+  <path d="M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z" fill="url(#np-coffin-long-chrome)" transform="translate(56,0)"/>
+  <path d="M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z" fill="url(#np-coffin-long-chrome)" transform="translate(84,0)"/>
+  <path d="M 2 60 Q 0 60 0 58 C 0 50 5 14 5 10 L 5 0 L 19 0 L 19 10 C 19 14 24 50 24 58 Q 24 60 22 60 Q 12 62 2 60 Z" fill="url(#np-coffin-long-chrome)" transform="translate(112,0)"/>
+</svg>"
+`;
