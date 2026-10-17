@@ -51,7 +51,7 @@ starting value, editable from the admin panel, unless marked "fixed".
 | A20 | Pincode → city/state lookup is not used; customers type city and pick state. | External pincode APIs are unreliable. |
 | A21 | Lookbook items can have several photos (Instagram carousels). | Matches how she posts. |
 | A22 | "From" prices: totals show "Estimated total, from ₹X". She records the final bill on completion. Deposit amounts are fixed. | Brief uses "from" prices. |
-| A23 | Customer uploads (inspiration images) use unguessable Blob URLs (`addRandomSuffix`) and are never listed or rendered publicly. If the Blob store supports private access at build time, use it for these instead — check the current docs. | Inspiration photos may show the customer's hands, face or home. |
+| A23 | **Two Blob stores.** Public `clawsbyd-media` (portfolio, products, brand, review photos; `BLOB_READ_WRITE_TOKEN`) and private `clawsbyd-private` (customer inspiration uploads; `PRIVATE_BLOB_READ_WRITE_TOKEN`). Private blobs are shown only in the admin through an authenticated route that streams them — never via next/image or a public URL. | Inspiration photos may show the customer's hands, face or home. |
 | A24 | **The site takes no payments.** No payment buttons, UPI links, QR codes, transaction-ID forms or gateways. Her WhatsApp messages tell customers how to pay (UPI ID from settings, ref as the note); she records each payment in the admin. | Removes the least reliable part of the build; payment conversations already happen on WhatsApp. |
 
 ---
@@ -144,7 +144,8 @@ tests/unit/, tests/e2e/
 | `DATABASE_URL` | Neon pooled (injected by the Marketplace integration) |
 | `DATABASE_URL_UNPOOLED` | migrations |
 | `DATABASE_URL_TEST` | separate Neon branch for e2e |
-| `BLOB_READ_WRITE_TOKEN` | injected when the Blob store is connected |
+| `BLOB_READ_WRITE_TOKEN` | public store `clawsbyd-media` |
+| `PRIVATE_BLOB_READ_WRITE_TOKEN` | private store `clawsbyd-private` (customer inspiration uploads) |
 | `RESEND_API_KEY` | |
 | `EMAIL_FROM` | e.g. `Claws by D <bookings@send.clawsbyd.one-sentient.one>` |
 | `SESSION_SECRET` | 32+ random bytes |
@@ -154,6 +155,10 @@ tests/unit/, tests/e2e/
 | `NEXT_PUBLIC_SITE_URL` | `https://clawsbyd.one-sentient.one` in production |
 
 Never put a secret behind `NEXT_PUBLIC_`.
+
+**Function region: `sin1` (Singapore)**, the same region as the Neon database. Set it in
+Vercel → Settings → Functions and in `vercel.json` (`"regions": ["sin1"]`). Vercel's default
+is Washington (`iad1`), which would add a round trip across the world to every query.
 
 ### 3.5 Auth (one owner)
 - `owner` table, single row. Password hashed with argon2id, set via

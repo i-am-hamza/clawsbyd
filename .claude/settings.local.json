@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx neonctl *)",
+      "Bash(grep -v '^$')",
+      "Bash(npx vercel *)",
+      "Bash(rm -f \"E:/5. Portfolio_Daud Shaima/clawsbyd/.env.prod.tmp\")",
+      "Bash(git -C \"E:/5. Portfolio_Daud Shaima/clawsbyd\" check-ignore -v .env.local .env.prod.tmp)",
+      "Bash(git -C \"E:/5. Portfolio_Daud Shaima/clawsbyd\" status --short)",
+      "Bash(grep -v '^\\\\s*$')"
+    ]
+  }
+}

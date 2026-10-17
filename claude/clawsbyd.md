@@ -34,7 +34,14 @@ time the public site looks alive.
    environments. This injects `DATABASE_URL` and `DATABASE_URL_UNPOOLED`.
    In the Neon console create a branch `test` and copy its pooled URL as
    `DATABASE_URL_TEST`.
-4. **Vercel Blob:** Storage → Create → Blob → connect. Injects `BLOB_READ_WRITE_TOKEN`.
+4. **Vercel Blob — two stores**, both in Mumbai (`bom1`) or Singapore (`sin1`):
+   - `clawsbyd-media`: **Public**, prefix `BLOB`, tick "Add a read-write token env var"
+     → `BLOB_READ_WRITE_TOKEN`. Her portfolio, products, logo.
+   - `clawsbyd-private`: **Private**, prefix `PRIVATE_BLOB`, tick the token box →
+     `PRIVATE_BLOB_READ_WRITE_TOKEN`. Customers' inspiration photos.
+   Copy both tokens into `.env.local` by hand (they're added to Production and Preview only).
+   **Function region:** Settings → Functions → Function Region → Singapore (`sin1`), to sit
+   next to the database.
 5. **Resend:** create an account and an API key. Add the sending domain
    `send.clawsbyd.one-sentient.one` (Domains → Add). Resend shows 3–4 DNS records
    (an MX and TXT for SPF on the `send…` name, a DKIM TXT on `resend._domainkey…`).
@@ -205,8 +212,10 @@ Read CLAUDE.md, then SPEC §9.7, §16.5, §17 (upload test).
 2. Client uploads to Vercel Blob via /api/blob/upload (handleUpload): admin uploads
    require the owner session; customer inspiration uploads get a short-lived token,
    rate limited, image types only, 10 MB cap before compression. addRandomSuffix on.
-   Check the current Vercel Blob docs for private access and use it for inspiration
-   uploads if available (SPEC A23). Record each upload in media.
+   Customer inspiration uploads go to the private store (SPEC A23); the admin views
+   them through an authenticated route that streams the blob. Check the current
+   @vercel/blob docs for private-store reads. Record each upload in media.
+   Add vercel.json with "regions": ["sin1"] if it isn't there yet.
 
 3. Admin Lookbook (§9.7): grid, multi-upload with per-file progress, tag sheet with
    big glam chips, bulk edit, drag reorder with up/down fallback, publish/feature,
@@ -420,6 +429,10 @@ No new features. For each item, report findings first, then fix only what I appr
 9. Placeholders — list every «TO CONFIRM», is_placeholder row and sentinel.
 10. Security headers and CSP (allow Blob and Google Fonts only as needed), no secret
     in the client bundle (grep the build output for every secret's value).
+11. Backups — the Neon free plan keeps only 6 hours of history. Propose a nightly
+    pg_dump of production (GitHub Action using DATABASE_URL_UNPOOLED as a repository
+    secret), stored in the private Blob store with 30 days of retention, plus a tested
+    restore into a scratch Neon branch. Show me the plan before building it.
 ````
 
 ---
