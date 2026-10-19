@@ -48,18 +48,27 @@ async function main() {
     // In dev/test, overwrite private keys with sentinels
     if (isDev && key === 'private.studio_address') value = 'SENTINEL-ADDR-4417, Hindpiri';
     if (isDev && key === 'private.pickup_point') value = 'SENTINEL-PICKUP-9902';
+    // Always keep the notify email in sync with OWNER_EMAIL.
+    if (key === 'contact.owner_notify_email' && process.env.OWNER_EMAIL) {
+      await upsertSetting(key, process.env.OWNER_EMAIL.trim());
+      continue;
+    }
     const [existing] = await db.select().from(settings).where(eq(settings.key, key));
     if (!existing) await upsertSetting(key, value);
   }
   console.log('  settings ✓');
 
   // ─── Owner (§16.10) ──────────────────────────────────────────────────────
-  const ownerEmail = process.env.OWNER_EMAIL;
+  const ownerEmail = process.env.OWNER_EMAIL?.trim();
   if (!ownerEmail) throw new Error('OWNER_EMAIL env var is required for seed');
-  const [existingOwner] = await db.select().from(owner).where(eq(owner.email, ownerEmail));
-  if (!existingOwner) {
+  // There is always exactly one owner row. Update its email if it changed.
+  const allOwners = await db.select().from(owner);
+  if (allOwners.length === 0) {
     await db.insert(owner).values({ email: ownerEmail });
-    console.log(`  owner row created for ${ownerEmail}`);
+    console.log('  owner row created');
+  } else if (allOwners[0]!.email !== ownerEmail) {
+    await db.update(owner).set({ email: ownerEmail });
+    console.log('  owner email updated');
   }
   console.log('  owner ✓');
 

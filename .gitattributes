@@ -1,0 +1,14 @@
+# Force LF line endings in the working tree for all text files.
+# Protects welcome-note.ts and other files with hash-verified content
+# from CRLF corruption on Windows checkouts.
+* text=auto eol=lf
+
+# Binary files — never touch line endings.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff binary
+*.woff2 binary

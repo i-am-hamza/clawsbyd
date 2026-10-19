@@ -68,6 +68,8 @@ file wins; tell me about the conflict.
 
 ## Definition of done for any task
 Run `pnpm typecheck && pnpm lint && pnpm test` and the e2e specs the task touches.
+Playwright starts its own server via webServer. Never skip e2e specs because a dev
+server isn't running.
 Report in this shape, short: 1) what now works, in five lines or fewer, 2) anything
 you assumed or skipped, 3) how I can check it myself. Full detail only if I ask.
 

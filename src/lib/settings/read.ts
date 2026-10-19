@@ -8,7 +8,7 @@ type AllSettings = {
   [K in SettingKey]: (typeof REGISTRY)[K]['default'];
 };
 
-async function loadAllSettings(): Promise<AllSettings> {
+export async function getSettingsUncached(): Promise<AllSettings> {
   const rows = await db.select().from(settings);
   const result = {} as AllSettings;
 
@@ -28,7 +28,7 @@ async function loadAllSettings(): Promise<AllSettings> {
   return result;
 }
 
-export const getSettings = unstable_cache(loadAllSettings, ['settings-all'], {
+export const getSettings = unstable_cache(getSettingsUncached, ['settings-all'], {
   tags: ['settings'],
 });
 
@@ -38,7 +38,7 @@ type PublicSettings = {
 
 export const getPublicSettings = unstable_cache(
   async (): Promise<PublicSettings> => {
-    const all = await loadAllSettings();
+    const all = await getSettingsUncached();
     const pub = {} as PublicSettings;
 
     for (const key of Object.keys(all) as SettingKey[]) {

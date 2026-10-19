@@ -16,6 +16,7 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "tsx scripts/db-reset.ts",
     "owner:set-password": "tsx scripts/owner-set-password.ts",
+    "owner:sync-email": "tsx scripts/owner-sync-email.ts",
     "welcome:arm": "tsx scripts/welcome-arm.ts"
   },
   "dependencies": {
