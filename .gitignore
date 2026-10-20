@@ -25,3 +25,6 @@ test-results/
 # misc
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code
+.claude/settings.local.json
