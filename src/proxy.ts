@@ -105,5 +105,5 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon|apple-touch|manifest\\.webmanifest|admin|api/blob|api/cron|preview).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon|apple-touch|manifest\\.webmanifest|admin|api/blob|api/admin|api/cron|preview).*)'],
 };

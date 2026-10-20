@@ -25,6 +25,10 @@ import { eq } from 'drizzle-orm';
 import { REGISTRY } from '../src/lib/settings/registry';
 import { renderNailPreviewSVG, NAIL_SHAPES, NAIL_LENGTHS } from '../src/lib/nail-svg';
 import { addDays, format } from 'date-fns';
+import * as fs from 'fs';
+import * as path from 'path';
+import { put } from '@vercel/blob';
+import sharp from 'sharp';
 
 const isDev = !process.env.DATABASE_URL?.includes('vercel-storage')
   || !!process.env.DATABASE_URL_TEST;
@@ -607,77 +611,190 @@ async function main() {
   }
   console.log('  products ✓');
 
-  // ─── Placeholder lookbook items (§16.5) ──────────────────────────────────
-  const PALETTE: Record<number, string[]> = {
-    1: ['#FAF6F7', '#F3E9EC', '#E8D5D9'],
-    2: ['#F0C0CB', '#E8A8B6', '#D990A2'],
-    3: ['#C97090', '#A3405A', '#8C2B45'],
-    4: ['#851230', '#6B0E26', '#5A0B1F'],
-    5: ['#2B0D16', '#4A1528', '#3D1020'],
-  };
-
-  const shapeCycle = [...NAIL_SHAPES];
-  const occasionCycle = ['everyday', 'party', 'bridal', 'festive', 'college'] as const;
-  // 4/4/4/3/3 distribution across glam levels 1–5
-  const glamDistrib = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5];
-
+  // ─── Lookbook items (§16.5) ──────────────────────────────────────────────
+  const looksDir = path.resolve('seed/looks');
+  const csvPath = path.join(looksDir, 'looks.csv');
   const existingLooks = await db.select().from(lookbookItems);
+
   if (existingLooks.length === 0) {
-    const mediaRows = [];
-    const lookRows = [];
-    const lookMediaRows = [];
+    if (fs.existsSync(csvPath)) {
+      // Real photos: upload through sharp (strips EXIF) and create published looks
+      console.log('  seeding looks from looks.csv…');
+      const blobPrefix = isDev ? 'dev/' : '';
+      const csvText = fs.readFileSync(csvPath, 'utf-8');
+      const csvLines = csvText
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#'));
 
-    for (let i = 0; i < 18; i++) {
-      const glamLevel = glamDistrib[i]!;
-      const shape = shapeCycle[i % shapeCycle.length]!;
-      const length = NAIL_LENGTHS[i % NAIL_LENGTHS.length]!;
-      const occasion = occasionCycle[i % occasionCycle.length]!;
-      const colours = PALETTE[glamLevel]!;
-      const isFeatured = i < 6;
-      const slug = `look-placeholder-${String(i + 1).padStart(2, '0')}`;
+      // First line is the header
+      const [headerLine, ...dataLines] = csvLines;
+      const headers = headerLine!.split(',');
+      const col = (name: string) => headers.indexOf(name);
 
-      const svgData = renderNailPreviewSVG({ shape, length, colours });
-      const dataUri = `data:image/svg+xml;base64,${Buffer.from(svgData).toString('base64')}`;
-      const mediaId = crypto.randomUUID();
-      const itemId = crypto.randomUUID();
+      for (let i = 0; i < dataLines.length; i++) {
+        const row = dataLines[i]!.split(',');
+        const file = row[col('file')]?.trim() ?? '';
+        const title = row[col('title')]?.trim() ?? null;
+        const glamLevel = Number(row[col('glam_level')]?.trim() ?? '3');
+        const shape = (row[col('shape')]?.trim() ?? 'oval') as typeof lookbookItems.$inferInsert['shape'];
+        const length = (row[col('length')]?.trim() ?? 'medium') as typeof lookbookItems.$inferInsert['length'];
+        const occasions = (row[col('occasions')]?.trim() ?? '').split('|').filter(Boolean) as typeof lookbookItems.$inferInsert['occasions'];
+        const colours = (row[col('colours')]?.trim() ?? '').split('|').filter(Boolean);
+        const featured = row[col('featured')]?.trim() === 'true';
 
-      mediaRows.push({
-        id: mediaId,
-        url: dataUri,
-        pathname: `placeholder/look-${slug}.svg`,
-        width: 240,
-        height: 300,
-        alt: `Placeholder look: ${shape} ${length}`,
-        kind: 'portfolio' as const,
-        isPlaceholder: true,
-      });
+        const imgPath = path.join(looksDir, file);
+        if (!fs.existsSync(imgPath)) {
+          console.warn(`  ⚠ seed/looks/${file} not found, skipping`);
+          continue;
+        }
 
-      lookRows.push({
-        id: itemId,
-        slug,
-        glamLevel,
-        shape,
-        length,
-        occasions: [occasion],
-        colours,
-        isFeatured,
-        isPublished: true,
-        isPlaceholder: true,
-        sortOrder: i,
-        publishedAt: new Date(),
-      });
+        // Process through sharp: resize to ≤2000px long edge, encode WebP, strip EXIF
+        const inputBuffer = fs.readFileSync(imgPath);
+        const sharpInstance = sharp(inputBuffer);
+        const meta = await sharpInstance.metadata();
+        const longEdge = Math.max(meta.width ?? 1, meta.height ?? 1);
+        const scale = longEdge > 2000 ? 2000 / longEdge : 1;
+        const targetW = Math.round((meta.width ?? 800) * scale);
+        const targetH = Math.round((meta.height ?? 800) * scale);
 
-      lookMediaRows.push({
-        itemId,
-        mediaId,
-        sortOrder: 0,
-        isCover: true,
-      });
+        const webpBuffer = await sharpInstance
+          .rotate() // correct EXIF orientation
+          .resize(targetW, targetH, { fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 80 })
+          // withMetadata omitted → sharp strips all metadata including GPS
+          .toBuffer();
+
+        // Generate blur data URL: 10px wide version
+        const blurW = 10;
+        const blurH = Math.max(1, Math.round((targetH / targetW) * blurW));
+        const blurBuffer = await sharp(webpBuffer)
+          .resize(blurW, blurH)
+          .webp({ quality: 40 })
+          .toBuffer();
+        const blurDataUrl = `data:image/webp;base64,${blurBuffer.toString('base64')}`;
+
+        const slug = title
+          ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60)
+          : `look-${String(i + 1).padStart(2, '0')}`;
+
+        const blobPathname = `${blobPrefix}portfolio/seed-${slug}-${Date.now()}.webp`;
+        const blobResult = await put(blobPathname, webpBuffer, {
+          access: 'public',
+          token: process.env.BLOB_READ_WRITE_TOKEN,
+          addRandomSuffix: false,
+          contentType: 'image/webp',
+        });
+
+        const mediaId = crypto.randomUUID();
+        const itemId = crypto.randomUUID();
+
+        await db.insert(media).values({
+          id: mediaId,
+          url: blobResult.url,
+          pathname: blobResult.pathname,
+          width: targetW,
+          height: targetH,
+          blurDataUrl,
+          alt: title ?? `Look ${i + 1}`,
+          kind: 'portfolio',
+          isPlaceholder: false,
+        });
+
+        await db.insert(lookbookItems).values({
+          id: itemId,
+          slug,
+          title: title ?? null,
+          glamLevel,
+          shape,
+          length,
+          occasions,
+          colours,
+          isFeatured: featured,
+          isPublished: true,
+          isPlaceholder: false,
+          sortOrder: i,
+          publishedAt: new Date(),
+        });
+
+        await db.insert(lookbookItemMedia).values({
+          itemId,
+          mediaId,
+          sortOrder: 0,
+          isCover: true,
+        });
+
+        console.log(`    ✓ ${file} → ${blobResult.url.slice(0, 60)}…`);
+      }
+    } else {
+      // Placeholder SVG looks
+      const PALETTE: Record<number, string[]> = {
+        1: ['#FAF6F7', '#F3E9EC', '#E8D5D9'],
+        2: ['#F0C0CB', '#E8A8B6', '#D990A2'],
+        3: ['#C97090', '#A3405A', '#8C2B45'],
+        4: ['#851230', '#6B0E26', '#5A0B1F'],
+        5: ['#2B0D16', '#4A1528', '#3D1020'],
+      };
+
+      const shapeCycle = [...NAIL_SHAPES];
+      const occasionCycle = ['everyday', 'party', 'bridal', 'festive', 'college'] as const;
+      const glamDistrib = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5];
+      const mediaRows = [];
+      const lookRows = [];
+      const lookMediaRows = [];
+
+      for (let i = 0; i < 18; i++) {
+        const glamLevel = glamDistrib[i]!;
+        const shape = shapeCycle[i % shapeCycle.length]!;
+        const length = NAIL_LENGTHS[i % NAIL_LENGTHS.length]!;
+        const occasion = occasionCycle[i % occasionCycle.length]!;
+        const colours = PALETTE[glamLevel]!;
+        const isFeatured = i < 6;
+        const slug = `look-placeholder-${String(i + 1).padStart(2, '0')}`;
+
+        const svgData = renderNailPreviewSVG({ shape, length, colours });
+        const dataUri = `data:image/svg+xml;base64,${Buffer.from(svgData).toString('base64')}`;
+        const mediaId = crypto.randomUUID();
+        const itemId = crypto.randomUUID();
+
+        mediaRows.push({
+          id: mediaId,
+          url: dataUri,
+          pathname: `placeholder/look-${slug}.svg`,
+          width: 240,
+          height: 300,
+          alt: `Placeholder look: ${shape} ${length}`,
+          kind: 'portfolio' as const,
+          isPlaceholder: true,
+        });
+
+        lookRows.push({
+          id: itemId,
+          slug,
+          glamLevel,
+          shape,
+          length,
+          occasions: [occasion],
+          colours,
+          isFeatured,
+          isPublished: true,
+          isPlaceholder: true,
+          sortOrder: i,
+          publishedAt: new Date(),
+        });
+
+        lookMediaRows.push({
+          itemId,
+          mediaId,
+          sortOrder: 0,
+          isCover: true,
+        });
+      }
+
+      await db.insert(media).values(mediaRows);
+      await db.insert(lookbookItems).values(lookRows);
+      await db.insert(lookbookItemMedia).values(lookMediaRows);
     }
-
-    await db.insert(media).values(mediaRows);
-    await db.insert(lookbookItems).values(lookRows);
-    await db.insert(lookbookItemMedia).values(lookMediaRows);
   }
   console.log('  lookbook_items ✓');
 

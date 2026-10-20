@@ -3,7 +3,7 @@ import { generateBookingRef, generateOrderRef, refPrefix } from '@/lib/domain/re
 
 describe('generateBookingRef', () => {
   it('has the correct prefix', () => {
-    expect(generateBookingRef()).toMatch(/^CBD-B-[0-9A-HJ-KMN-PR-TVWXYZ]{4}$/);
+    expect(generateBookingRef()).toMatch(/^CBD-B-[0-9A-HJ-KMN-TV-Z]{4}$/);
   });
 
   it('generates unique refs', () => {
@@ -14,7 +14,7 @@ describe('generateBookingRef', () => {
 
 describe('generateOrderRef', () => {
   it('has the correct prefix', () => {
-    expect(generateOrderRef()).toMatch(/^CBD-P-[0-9A-HJ-KMN-PR-TVWXYZ]{4}$/);
+    expect(generateOrderRef()).toMatch(/^CBD-P-[0-9A-HJ-KMN-TV-Z]{4}$/);
   });
 
   it('generates unique refs', () => {
