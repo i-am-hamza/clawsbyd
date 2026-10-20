@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { neon } from '@neondatabase/serverless';
-import { hash } from '@node-rs/argon2';
 
 // ---------------------------------------------------------------------------
 // DB helpers
 // ---------------------------------------------------------------------------
 async function withSql() {
-  const url = process.env.DATABASE_URL_TEST ?? process.env.DATABASE_URL ?? '';
+  const url = process.env['DATABASE_URL_TEST'] ?? process.env['DATABASE_URL'] ?? '';
   return neon(url);
 }
 
@@ -34,23 +33,8 @@ async function clearRateLimits() {
   await sql`DELETE FROM rate_limits WHERE key LIKE 'login:%'`;
 }
 
-const TEST_PASSWORD = 'test-password-abc-123';
-const TEST_EMAIL = 'daudshaima111@gmail.com';
-
-async function ensureOwner() {
-  const sql = await withSql();
-  const passwordHash = await hash(TEST_PASSWORD, {
-    algorithm: 2,
-    memoryCost: 65536,
-    timeCost: 3,
-    parallelism: 1,
-  });
-  await sql`
-    INSERT INTO owner (email, password_hash)
-    VALUES (${TEST_EMAIL}, ${passwordHash})
-    ON CONFLICT (email) DO UPDATE SET password_hash = ${passwordHash}
-  `;
-}
+const TEST_EMAIL = process.env['OWNER_EMAIL'] ?? 'forDaudShaima@pm.me';
+const TEST_PASSWORD = process.env['E2E_OWNER_PASSWORD'] ?? '';
 
 // ---------------------------------------------------------------------------
 // Auth + welcome note flow
@@ -58,7 +42,6 @@ async function ensureOwner() {
 test.describe('Auth & welcome note', () => {
   test.beforeAll(async () => {
     await setGoLive(true);
-    await ensureOwner();
     await clearRateLimits();
   });
 

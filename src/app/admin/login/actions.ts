@@ -42,13 +42,10 @@ export async function loginAction(
     return { error: 'Too many login attempts. Please try again later.' };
   }
 
-  const [ownerRow] = await db.select().from(owner);
   const ownerEmail = process.env.OWNER_EMAIL?.trim() ?? '';
+  const [ownerRow] = await db.select().from(owner).where(eq(owner.email, ownerEmail));
 
-  if (
-    !ownerRow?.passwordHash ||
-    email.toLowerCase() !== ownerEmail.toLowerCase()
-  ) {
+  if (!ownerRow?.passwordHash || email.toLowerCase() !== ownerEmail.toLowerCase()) {
     return { error: 'Incorrect email or password.' };
   }
 

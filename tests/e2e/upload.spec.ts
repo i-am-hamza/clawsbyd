@@ -11,19 +11,22 @@
 import { test, expect, type Page } from '@playwright/test';
 import * as path from 'path';
 import * as fs from 'fs';
-import { neon } from '@neondatabase/serverless';
 import exifr from 'exifr';
+import { neon } from '@neondatabase/serverless';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
+async function clearRateLimits() {
+  const url = process.env['DATABASE_URL_TEST'] ?? process.env['DATABASE_URL'] ?? '';
+  const sql = neon(url);
+  await sql`DELETE FROM rate_limits WHERE key LIKE 'login:%'`;
+}
+
 async function adminLogin(page: Page) {
-  // The test DB owner row needs a password — set up via env or a known test hash.
-  // Playwright webServer uses DATABASE_URL_TEST.
   await page.goto('/admin/login');
   await page.fill('input[name="email"]', process.env['OWNER_EMAIL'] ?? 'forDaudShaima@pm.me');
-  await page.fill('input[name="password"]', process.env['OWNER_PASSWORD'] ?? 'test-password-please-set');
+  await page.fill('input[name="password"]', process.env['E2E_OWNER_PASSWORD'] ?? '');
   await page.click('button[type="submit"]');
-  // Wait for redirect away from login
   await expect(page).not.toHaveURL(/\/admin\/login/, { timeout: 10_000 });
 }
 
@@ -33,6 +36,10 @@ const GPS_FIXTURE = path.resolve('tests/fixtures/gps.jpg');
 
 test.describe('Admin upload — EXIF stripping', () => {
   test.skip(!fs.existsSync(GPS_FIXTURE), 'GPS fixture not found — run scripts/create-gps-fixture.ts first');
+
+  test.beforeAll(async () => {
+    await clearRateLimits();
+  });
 
   test('uploaded image has GPS EXIF stripped', async ({ page }) => {
     // Verify the fixture has GPS data before upload
@@ -95,6 +102,10 @@ test.describe('Private blob access control', () => {
 
 test.describe('Lookbook grid — multi-upload at 360px', () => {
   test.use({ viewport: { width: 360, height: 740 } });
+
+  test.beforeAll(async () => {
+    await clearRateLimits();
+  });
 
   test('upload 5 photos and screenshot grid', async ({ page }) => {
     await adminLogin(page);
